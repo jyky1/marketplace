@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 
 
-from serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer
+from .serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer
 from .models import Rating, Category, Products, Reviews
 
 # Create your views here.
@@ -21,7 +21,7 @@ class ProductView(ModelViewSet):
     queryset = Products.objects.all()
     serializer_class = ProductSerializer
 
-
+    
 class ReviewsView(ModelViewSet):
     queryset = Reviews.objects.all()
     serializer_class = ReviewSerializer

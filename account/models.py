@@ -27,7 +27,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     email = models.EmailField(primary_key=True)
     name = models.CharField(max_length=15)
-    phone_number = models.IntegerField(max_length=13)
+    phone_number = models.CharField(max_length=13)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     activation_code = models.CharField(max_length=20, blank=True)
@@ -50,3 +50,4 @@ class User(AbstractBaseUser):
         code = get_random_string(10)
         self.activation_code=code
         self.save()
+        

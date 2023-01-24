@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-4sd*cvh=%89&15ptj0$^#s4w*rlc!e3)r5q8w9_y8f@tx$$07_
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+AUTH_USER_MODEL = 'account.User'
 ALLOWED_HOSTS = []
 
 
@@ -37,6 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'django_filters',
+    'rest_framework.authtoken',
+    'drf_yasg',
+    #apps
+    'account',
+    'product',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +84,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'marketplace',
-        'USER': 'postgres',
+        'USER': 'zhyldyzbek',
         'PASSWORD': '1',
         'HOST': 'localhost',
         'PORT': 5432

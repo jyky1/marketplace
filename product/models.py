@@ -7,7 +7,7 @@ from account.models import User
 
 class Category(models.Model):
     slug = models.SlugField(max_length=30, primary_key=True, blank=True)
-    title = models.CharField()
+    title = models.CharField(max_length=30)
 
     def __str__(self) -> str:
         return self.title
