@@ -14,6 +14,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class RatingSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.name')
+    # category = serializers.ManyRelatedField()
 
     class Meta:
         model = Rating
@@ -59,11 +60,19 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.name')
+    # author = serializers.ReadOnlyField(source='author.name')
+    
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        author = Products.objects.create(author=user, **validated_data)
+        return author
 
     class Meta:
         model = Products
-        fields = ['title', 'image', 'author', 'category', 'price']
+        # fields = ['author', 'title', 'price', 'descriptions', 'image', 'category']
+        fields = '__all__'
+
 
     def validate_title(self, title):
         if self.Meta.model.objects.filter(title=title).exists():
