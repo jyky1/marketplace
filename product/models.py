@@ -21,7 +21,7 @@ class Category(models.Model):
 class Products(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
     title = models.CharField(max_length=30)
-    category = models.ManyToManyField(Category, blank=False)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     image = models.ImageField(upload_to='products/', blank=False)
     descriptions = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

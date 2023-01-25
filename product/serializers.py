@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.db.models import Avg
 
+from account.serializers import RegistrationSerializer
 from .models import Category, Rating, Products, Reviews
 
 
@@ -60,19 +61,20 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    # author = serializers.ReadOnlyField(source='author.name')
+    author = serializers.ReadOnlyField(source='author.name')
+    number = serializers.ReadOnlyField(source='author.phone_number')
     
-    def create(self, validated_data):
-        request = self.context.get('request')
-        user = request.user
-        author = Products.objects.create(author=user, **validated_data)
-        return author
 
     class Meta:
         model = Products
-        # fields = ['author', 'title', 'price', 'descriptions', 'image', 'category']
-        fields = '__all__'
+        fields = [ 'title', 'price', 'descriptions', 'image', 'category', 'author', 'number']
+        # fields = '__all__'
 
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        product = Products.objects.create(author=user, **validated_data)
+        return product
 
     def validate_title(self, title):
         if self.Meta.model.objects.filter(title=title).exists():
