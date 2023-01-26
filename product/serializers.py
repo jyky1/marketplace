@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.db.models import Avg
 
 from account.serializers import RegistrationSerializer
-from .models import Category, Rating, Products, Reviews
+from .models import Category, Rating, Products, Reviews, Favovite, Basket
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -15,7 +15,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class RatingSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.name')
-    # category = serializers.ManyRelatedField()
+    
 
     class Meta:
         model = Rating
@@ -88,12 +88,17 @@ class ProductSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('неправильный формат номера, пример: 0700934445')
         return number
 
+    def update(self, instance, validated_data):
+        instance.product = validated_data.get('product')
+        instance.save()
+        return super().update(instance, validated_data)
+
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['reviews'] = ReviewSerializer(Reviews.objects.filter(product=instance.pk), many=True).data
         representation['ratings'] = instance.ratings.aggregate(Avg('rating'))['rating__avg']
+        representation['favorit_count'] = instance.favorit.count()
         return representation
-
 
     
 class ProductListSerializer(serializers.ModelSerializer):
@@ -101,3 +106,61 @@ class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
         fields = '__all__'
+
+
+class FavoritSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = Favovite
+        fields = '__all__'
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        favorit = Favovite.objects.create(**validated_data)
+        return favorit
+
+    def validate_title(self, title):
+        if self.Meta.model.objects.filter(title=title).exists():
+            raise serializers.ValidationError('Такой продукт уже существует в избранных')
+        return title
+
+    def update(self, instance, validated_data):
+        instance.favorit = validated_data.get('favorit')
+        instance.save()
+        return super().update(instance, validated_data)
+
+    def delete(self, instance, validated_data):
+        instance.favorit = validated_data.get('favorit')
+        instance.save()
+        return validated_data.pop(instance.favorit)
+
+
+class BasketSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = Basket
+        fields = '__all__'
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        basket = Basket.objects.create(**validated_data)
+        return basket
+
+    def validate_title(self, title):
+        if self.Meta.model.objects.filter(title=title).exists():
+            raise serializers.ValidationError('Такой продукт уже сушествует в корзине')
+        return title
+
+    def update(self, instance, validated_data):
+        instance.basket = validated_data.get('basket')
+        instance.save()
+        return super().update(instance, validated_data)
+
+    def delete(self, instance, validated_data):
+        instance.basket = validated_data.get('basket')
+        instance.save()
+        return validated_data.pop(instance.basket)

@@ -1,9 +1,16 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
+<<<<<<< Updated upstream
 from .permissions import IsAdminAuthPermission, IsAuthorPermission
 from rest_framework.permissions import AllowAny
 from .serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer
 from .models import Rating, Category, Products, Reviews
+=======
+
+
+from .serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer, BasketSerializer, FavoritSerializer
+from .models import Rating, Category, Products, Reviews, Favovite, Basket
+>>>>>>> Stashed changes
 
 # Create your views here.
 
@@ -37,3 +44,12 @@ class ReviewsView(ModelViewSet):
     queryset = Reviews.objects.all()
     serializer_class = ReviewSerializer
 
+
+class FavoritView(ModelViewSet):
+    queryset = Favovite.objects.all()
+    serializer_class = FavoritSerializer
+
+
+class BasketView(ModelViewSet):
+    queryset = Basket.objects.all()
+    serializer_class = BasketSerializer

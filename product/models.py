@@ -21,7 +21,7 @@ class Products(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
     title = models.CharField(max_length=30)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
-    image = models.ImageField(upload_to='products/', blank=False)
+    image = models.ImageField(upload_to='products/', blank=True)
     descriptions = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -46,7 +46,7 @@ class Rating(models.Model):
     products = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='ratings')
 
     def __str__(self) -> str:
-        return f'{self.rating} U {self.author} ---> {self.post}'
+        return f'{self.rating} U {self.author.name} ---> {self.products.title}'
 
 
 class Reviews(models.Model):
@@ -56,3 +56,19 @@ class Reviews(models.Model):
 
     def __str__(self) -> str:
         return self.body
+
+
+class Basket(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='basket') 
+    # author = models.ForeignKey(User, on_delete=models.CASCADE,)
+
+    def __str__(self) -> str:
+        return self.product.title
+
+
+class Favovite(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='favorite')
+    # author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.product.title
