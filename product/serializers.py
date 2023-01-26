@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.db.models import Avg
 
 from account.serializers import RegistrationSerializer
-from .models import Category, Rating, Products, Reviews, Favovite, Basket
+from .models import Category, Rating, Products, Reviews, Favorite, Basket
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -112,19 +112,20 @@ class FavoritSerializer(serializers.ModelSerializer):
 
 
     class Meta:
-        model = Favovite
+        model = Favorite
         fields = '__all__'
 
     def create(self, validated_data):
         request = self.context.get('request')
         user = request.user
-        favorit = Favovite.objects.create(**validated_data)
+        favorit = Favorite.objects.create(**validated_data)
         return favorit
 
-    def validate_title(self, title):
-        if self.Meta.model.objects.filter(title=title).exists():
+    def validate_product(self, product):
+        if self.Meta.model.objects.filter(product=product).exists():
             raise serializers.ValidationError('Такой продукт уже существует в избранных')
-        return title
+        return product
+
 
     def update(self, instance, validated_data):
         instance.favorit = validated_data.get('favorit')
@@ -135,6 +136,11 @@ class FavoritSerializer(serializers.ModelSerializer):
         instance.favorit = validated_data.get('favorit')
         instance.save()
         return validated_data.pop(instance.favorit)
+
+    # def to_representation(self, instance):
+    #     representation = super().to_representation(instance)
+    #     representation['favorit_count'] = instance.favorit.count()
+    #     return representation
 
 
 class BasketSerializer(serializers.ModelSerializer):
@@ -150,10 +156,10 @@ class BasketSerializer(serializers.ModelSerializer):
         basket = Basket.objects.create(**validated_data)
         return basket
 
-    def validate_title(self, title):
-        if self.Meta.model.objects.filter(title=title).exists():
+    def validate_product(self, product):
+        if self.Meta.model.objects.filter(product=product).exists():
             raise serializers.ValidationError('Такой продукт уже сушествует в корзине')
-        return title
+        return product
 
     def update(self, instance, validated_data):
         instance.basket = validated_data.get('basket')

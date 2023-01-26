@@ -60,15 +60,13 @@ class Reviews(models.Model):
 
 class Basket(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='basket') 
-    # author = models.ForeignKey(User, on_delete=models.CASCADE,)
 
     def __str__(self) -> str:
         return self.product.title
 
 
-class Favovite(models.Model):
+class Favorite(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='favorite')
-    # author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.product.title
