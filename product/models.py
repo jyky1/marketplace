@@ -3,7 +3,6 @@ from slugify import slugify
 
 from account.models import User
 
-# Create your models here.
 
 class Category(models.Model):
     slug = models.SlugField(max_length=30, primary_key=True, blank=True)

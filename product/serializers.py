@@ -29,8 +29,10 @@ class RatingSerializer(serializers.ModelSerializer):
         return rating
 
     def validate_rating(self, rating):
-        if rating not in range(1, 6):
-            raise serializers.ValidationError('слишком много или слишком мало')
+        if rating > 5:
+            raise serializers.ValidationError('слишком много, выберите рейтинг от 1 до 5')
+        elif rating < 1:
+            raise serializers.ValidationError('cлишком мало, выберите рейтинг от 1 до 5')
         return rating
 
     def update(self, instance, validated_data):
@@ -80,6 +82,11 @@ class ProductSerializer(serializers.ModelSerializer):
         if self.Meta.model.objects.filter(title=title).exists():
             raise serializers.ValidationError('Такой продукт уже существует')
         return title
+    
+    def validate_number(self, number):
+        if len(number) > 13 or not number.is_digit():
+            raise serializers.ValidationError('неправильный формат номера, пример: 0700934445')
+        return number
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

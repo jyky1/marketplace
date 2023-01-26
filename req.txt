@@ -4,4 +4,4 @@ Pillow
 drf_yasg
 django-filter
 python-slugify
-
+python-decouple
