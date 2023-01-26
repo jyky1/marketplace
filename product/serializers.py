@@ -64,12 +64,12 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.name')
-    number = serializers.ReadOnlyField(source='author.phone_number')
+    
     
 
     class Meta:
         model = Products
-        fields = [ 'title', 'price', 'descriptions', 'image', 'category', 'author', 'number']
+        fields = [ 'title', 'price', 'descriptions', 'image', 'category', 'author']
         # fields = '__all__'
 
     def create(self, validated_data):
