@@ -4,9 +4,15 @@ from .permissions import IsAdminAuthPermission, IsAuthorPermission
 from rest_framework.permissions import AllowAny
 from .serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer
 from .models import Rating, Category, Products, Reviews
+<<<<<<< HEAD
 from rest_framework.pagination import PageNumberPagination
 
 from .serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer, BasketSerializer, FavoriteSerializer
+=======
+
+
+from .serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer, BasketSerializer, FavoritSerializer
+>>>>>>> e996159e13c8ad3c3258af3d1249f7041b1e5586
 from .models import Rating, Category, Products, Reviews, Favorite, Basket
 
 # Create your views here.
@@ -50,9 +56,15 @@ class ReviewsView(ModelViewSet):
     serializer_class = ReviewSerializer
 
 
+<<<<<<< HEAD
 class FavoriteView(ModelViewSet):
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializer
+=======
+class FavoritView(ModelViewSet):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoritSerializer
+>>>>>>> e996159e13c8ad3c3258af3d1249f7041b1e5586
 
 
 class BasketView(ModelViewSet):

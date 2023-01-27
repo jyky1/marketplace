@@ -12,6 +12,7 @@ router.register('favorite', FavoriteView)
 router.register('basket', BasketView)
 
 
+
 urlpatterns = [
     path('categories/', CategoryView.as_view({'get':'list'})),
     path('', include(router.urls)),

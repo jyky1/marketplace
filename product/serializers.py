@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.db.models import Avg
 
-from account.serializers import RegistrationSerializer
 from .models import Category, Rating, Products, Reviews, Favorite, Basket
 
 
@@ -97,7 +96,7 @@ class ProductSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['reviews'] = ReviewSerializer(Reviews.objects.filter(product=instance.pk), many=True).data
         representation['ratings'] = instance.ratings.aggregate(Avg('rating'))['rating__avg']
-        representation['favorit_count'] = instance.favorit.count()
+        # representation['favorit_count'] = instance.favorit.count()
         return representation
 
     
@@ -111,34 +110,42 @@ class ProductSerializer(serializers.ModelSerializer):
 class FavoriteSerializer(serializers.ModelSerializer):
 
     class Meta:
+        model = Products
+        fields = '__all__'
+
+
+class FavoritSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
         model = Favorite
         fields = '__all__'
 
     def create(self, validated_data):
         request = self.context.get('request')
         user = request.user
-        favorite = Favorite.objects.create(author=user, **validated_data)
+        favorite = Favorite.objects.create(**validated_data)
         return favorite
 
-    def validate_title(self, product):
+    def validate_product(self, product):
         if self.Meta.model.objects.filter(product=product).exists():
             raise serializers.ValidationError('Такой продукт уже существует в избранных')
         return product
-    
-    
+
+
     def update(self, instance, validated_data):
-        instance.favorite = validated_data.get('favorite')
+        instance.favorit = validated_data.get('favorite')
         instance.save()
         return super().update(instance, validated_data)
 
     def delete(self, instance, validated_data):
-        instance.favorite = validated_data.get('favorite')
+        instance.favorit = validated_data.get('favorite')
         instance.save()
         return validated_data.pop(instance.favorite)
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['favorit_count'] = instance.product.count()
+        representation['favorit_count'] = instance.favorit.product.count()
         return representation
 
 
@@ -155,10 +162,10 @@ class BasketSerializer(serializers.ModelSerializer):
         basket = Basket.objects.create(**validated_data)
         return basket
 
-    def validate_title(self, title):
-        if self.Meta.model.objects.filter(title=title).exists():
-            raise serializers.ValidationError('Такой продукт уже существует в корзине')
-        return title
+    def validate_product(self, product):
+        if self.Meta.model.objects.filter(product=product).exists():
+            raise serializers.ValidationError('Такой продукт уже сушествует в корзине')
+        return product
 
     def update(self, instance, validated_data):
         instance.basket = validated_data.get('basket')
