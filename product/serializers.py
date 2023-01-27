@@ -100,7 +100,14 @@ class ProductSerializer(serializers.ModelSerializer):
         return representation
 
     
-class ProductListSerializer(serializers.ModelSerializer):
+# class ProductListSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = Products
+#         fields = '__all__'
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Products

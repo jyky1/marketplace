@@ -4,7 +4,7 @@ from .permissions import IsAdminAuthPermission, IsAuthorPermission
 from rest_framework.permissions import AllowAny
 from .serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer
 from .models import Rating, Category, Products, Reviews
-
+from rest_framework.pagination import PageNumberPagination
 
 from .serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer, BasketSerializer, FavoritSerializer
 from .models import Rating, Category, Products, Reviews, Favorite, Basket
@@ -21,9 +21,17 @@ class CategoryView(ModelViewSet):
     serializer_class = CategorySerializer
 
 
+class ProductListPagination(PageNumberPagination):
+    page_size = 3
+    page_size_query_param = 'page_size'
+    max_page_size = 5
+
 class ProductView(ModelViewSet):
     queryset = Products.objects.all()
     serializer_class = ProductSerializer
+    pagination_class =ProductListPagination
+
+
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:

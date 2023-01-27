@@ -8,7 +8,7 @@ router = DefaultRouter()
 router.register('products', ProductView)
 router.register('reviews', ReviewsView)
 router.register('rating', RatingView)
-router.register('favorit', FavoritView)
+router.register('favorite', FavoritView)
 router.register('basket', BasketView)
 
 
