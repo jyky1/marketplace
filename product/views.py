@@ -1,16 +1,13 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
-<<<<<<< Updated upstream
 from .permissions import IsAdminAuthPermission, IsAuthorPermission
 from rest_framework.permissions import AllowAny
 from .serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer
 from .models import Rating, Category, Products, Reviews
-=======
+from rest_framework.pagination import PageNumberPagination
 
-
-from .serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer, BasketSerializer, FavoritSerializer
-from .models import Rating, Category, Products, Reviews, Favovite, Basket
->>>>>>> Stashed changes
+from .serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer, BasketSerializer, FavoriteSerializer
+from .models import Rating, Category, Products, Reviews, Favorite, Basket
 
 # Create your views here.
 
@@ -24,9 +21,17 @@ class CategoryView(ModelViewSet):
     serializer_class = CategorySerializer
 
 
+class ProductListPagination(PageNumberPagination):
+    page_size = 3
+    page_size_query_param = 'page_size'
+    max_page_size = 5
+
 class ProductView(ModelViewSet):
     queryset = Products.objects.all()
     serializer_class = ProductSerializer
+    pagination_class =ProductListPagination
+
+
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
@@ -45,9 +50,9 @@ class ReviewsView(ModelViewSet):
     serializer_class = ReviewSerializer
 
 
-class FavoritView(ModelViewSet):
-    queryset = Favovite.objects.all()
-    serializer_class = FavoritSerializer
+class FavoriteView(ModelViewSet):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
 
 
 class BasketView(ModelViewSet):

@@ -1,14 +1,14 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from .views import CategoryView, ReviewsView, ProductView, RatingView, FavoritView, BasketView
+from .views import CategoryView, ReviewsView, ProductView, RatingView, FavoriteView, BasketView
 
 
 router = DefaultRouter()
 router.register('products', ProductView)
 router.register('reviews', ReviewsView)
 router.register('rating', RatingView)
-router.register('favorit', FavoritView)
+router.register('favorite', FavoriteView)
 router.register('basket', BasketView)
 
 
