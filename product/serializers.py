@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.db.models import Avg
 
-from account.serializers import RegistrationSerializer
 from .models import Category, Rating, Products, Reviews, Favorite, Basket
 
 
