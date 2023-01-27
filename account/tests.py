@@ -45,6 +45,7 @@ class UserTest(APITestCase):
     def test_forgot_password_complete(self):
         data = {'code':request, 'email':'jykymyrza@gmail.com', 'password1':'1234','password2':'1234'}
         request = self.factory.post('forgot_password_complete/', data=data, format='json')
+
         
         
     def test_log_out(self):

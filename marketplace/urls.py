@@ -23,7 +23,7 @@ schema_view = get_schema_view(openapi.Info(title='команда мы все м�
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('docks/', schema_view.with_ui('swagger')),
+    path('docs/', schema_view.with_ui('swagger')),
     path('api/', include('product.urls')),
     path('api/', include('account.urls')),
 ]

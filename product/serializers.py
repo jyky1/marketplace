@@ -136,11 +136,6 @@ class FavoritSerializer(serializers.ModelSerializer):
         instance.save()
         return validated_data.pop(instance.favorite)
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['favorit_count'] = instance.favorit.product.count()
-        return representation
-
 
 class BasketSerializer(serializers.ModelSerializer):
 
