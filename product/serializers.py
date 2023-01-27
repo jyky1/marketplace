@@ -97,7 +97,7 @@ class ProductSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['reviews'] = ReviewSerializer(Reviews.objects.filter(product=instance.pk), many=True).data
         representation['ratings'] = instance.ratings.aggregate(Avg('rating'))['rating__avg']
-        representation['favorit_count'] = instance.favorit.count()
+        # representation['favorit_count'] = instance.favorit.count()
         return representation
 
     
@@ -118,8 +118,8 @@ class FavoritSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         request = self.context.get('request')
         user = request.user
-        favorit = Favorite.objects.create(**validated_data)
-        return favorit
+        favorite = Favorite.objects.create(**validated_data)
+        return favorite
 
     def validate_product(self, product):
         if self.Meta.model.objects.filter(product=product).exists():
@@ -128,19 +128,19 @@ class FavoritSerializer(serializers.ModelSerializer):
 
 
     def update(self, instance, validated_data):
-        instance.favorit = validated_data.get('favorit')
+        instance.favorit = validated_data.get('favorite')
         instance.save()
         return super().update(instance, validated_data)
 
     def delete(self, instance, validated_data):
-        instance.favorit = validated_data.get('favorit')
+        instance.favorit = validated_data.get('favorite')
         instance.save()
-        return validated_data.pop(instance.favorit)
+        return validated_data.pop(instance.favorite)
 
-    # def to_representation(self, instance):
-    #     representation = super().to_representation(instance)
-    #     representation['favorit_count'] = instance.favorit.count()
-    #     return representation
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['favorit_count'] = instance.favorit.product.count()
+        return representation
 
 
 class BasketSerializer(serializers.ModelSerializer):

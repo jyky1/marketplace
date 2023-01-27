@@ -10,7 +10,7 @@ class UserTest(APITestCase):
         self.user = User.objects.create_user(email='jykymyrza@gmail.com', password='1234', is_active=True)
 
     def test_register(self):
-        data = {'email': 'new_user@gmail.com', 'password':'1234', 'password_confirm':'1234', 'name':'whoiam', 'last_name':'WHOIAM'}
+        data = {'email': 'new_user@gmail.com', 'password':'1234', 'password_confirm':'1234', 'name':'whoiam', 'phone_number':'1234567891234'}
         request = self.factory.post('register/', data, format='json')
         view = RegistrationView.as_view()
         responce = view(request)
