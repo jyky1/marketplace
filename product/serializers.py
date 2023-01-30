@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.db.models import Avg
 
+from account.models import User
+
 from .models import Category, Rating, Products, Reviews, Favorite, Basket
 
 
@@ -143,6 +145,11 @@ class FavoritSerializer(serializers.ModelSerializer):
         instance.save()
         return validated_data.pop(instance.favorite)
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 
 class BasketSerializer(serializers.ModelSerializer):
 
@@ -150,6 +157,14 @@ class BasketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Basket
         fields = '__all__'
+    
+    # def to_representation(self, instance):
+    #     representation = super().to_representation(instance)
+    #     print(f'->{instance}<-')
+    #     print(f'-#{self}#-')
+    #     representation['price'] = ProductSerializer(Products.objects.filter(products_id=), many=True).data
+    #     return representation
+
 
     def create(self, validated_data):
         request = self.context.get('request')

@@ -3,6 +3,8 @@ from rest_framework.test import APITestCase, APIRequestFactory, force_authentica
 from .models import User
 from .views import RegistrationView, LoginView, ForgotPasswordView, ForgotPasswordCompleteView, ChangePasswordView, LogoutView
 
+
+
 class UserTest(APITestCase):
     
     def setUp(self):

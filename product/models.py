@@ -16,12 +16,15 @@ class Category(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+class ShowImage(models.Model):
+    image_name = models.CharField(max_length=255)
+    image_url = models.ImageField(upload_to="media/images") # or upload_to="images", which would result in your images being at "http://127.0.0.1:8000/media/images/Capture1.PNG"
 
 class Products(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
     title = models.CharField(max_length=30)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
-    image = models.ImageField(upload_to='products/', blank=True)
+    image = models.ImageField(upload_to='media/images', blank=True)
     descriptions = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

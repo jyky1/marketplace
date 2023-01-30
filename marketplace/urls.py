@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from marketplace import settings
+from django.conf.urls.static import static
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -29,4 +31,11 @@ urlpatterns = [
     path('docs/', schema_view.with_ui('swagger')),
     path('api/', include('product.urls')),
     path('api/', include('account.urls')),
+<<<<<<< Updated upstream
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+=======
+    path('showimage/', include('showimage.urls'))
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+>>>>>>> Stashed changes
