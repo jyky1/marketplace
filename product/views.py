@@ -8,7 +8,8 @@ from rest_framework.pagination import PageNumberPagination
 
 from .serializers import RatingSerializer, CategorySerializer, ProductSerializer, ReviewSerializer, BasketSerializer, FavoritSerializer
 from .models import Rating, Category, Products, Reviews, Favorite, Basket
-
+from rest_framework import filters
+import django_filters
 # Create your views here.
 
 class RatingView(ModelViewSet):
@@ -30,6 +31,10 @@ class ProductView(ModelViewSet):
     queryset = Products.objects.all()
     serializer_class = ProductSerializer
     pagination_class =ProductListPagination
+
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['category']
+    search_fields = ['title']
 
 
 

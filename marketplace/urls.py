@@ -18,6 +18,9 @@ from django.urls import path, include
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 schema_view = get_schema_view(openapi.Info(title='команда мы все можем но не сейчас', description='our_team', default_version='v1'), public=True)
 
 
@@ -26,4 +29,4 @@ urlpatterns = [
     path('docs/', schema_view.with_ui('swagger')),
     path('api/', include('product.urls')),
     path('api/', include('account.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
